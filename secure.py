@@ -1,16 +1,38 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.title("Full Browser Refresh Button")
+st.title("Auto-refresh on Right-click or DevTools")
 
-if st.button("Refresh (F5)"):
-    components.html(
-        """
-        <script>
-        window.location.reload();
-        </script>
-        """,
-        height=0,
-    )
+js_code = """
+<script>
+// Reload page function
+function reloadPage() {
+    window.location.reload();
+}
 
-st.write("Click the button above to reload the entire page (like F5).")
+// Right-click detection
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();   // optionally block right-click menu
+    reloadPage();
+});
+
+// DevTools detection - simple trick
+let devtoolsOpen = false;
+const threshold = 160;
+setInterval(() => {
+    const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+    const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+    if (widthThreshold || heightThreshold) {
+        if (!devtoolsOpen) {
+            devtoolsOpen = true;
+            reloadPage();
+        }
+    } else {
+        devtoolsOpen = false;
+    }
+}, 1000);
+</script>
+"""
+
+components.html(js_code)
+st.write("Try right-clicking or opening DevTools — the page will refresh automatically.")
