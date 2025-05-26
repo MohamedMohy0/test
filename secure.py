@@ -1,10 +1,20 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.title("Right-click Disabled on Full Page")
+st.title("Right-click disabled on entire Streamlit page")
 
 js_code = """
 <style>
+#overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999999;
+    /* Make overlay invisible but catch mouse events */
+    background: transparent;
+}
+
 #warning {
     position: fixed;
     bottom: 20px;
@@ -15,17 +25,20 @@ js_code = """
     border-radius: 5px;
     font-family: Arial, sans-serif;
     display: none;
-    z-index: 9999999; /* super high to be on top */
+    z-index: 10000000;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 </style>
 
+<div id="overlay"></div>
 <div id="warning">Right-click is disabled on this site.</div>
 
 <script>
-document.addEventListener('contextmenu', function(e) {
+const overlay = document.getElementById('overlay');
+const warning = document.getElementById('warning');
+
+overlay.addEventListener('contextmenu', function(e) {
     e.preventDefault();
-    var warning = document.getElementById('warning');
     warning.style.display = 'block';
     setTimeout(() => {
         warning.style.display = 'none';
