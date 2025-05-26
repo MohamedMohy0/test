@@ -1,38 +1,27 @@
 import streamlit as st
-import time
 import streamlit.components.v1 as components
 
-st.title("Auto-refresh on right-click or devtools open")
-
-load_time = time.strftime("%Y-%m-%d %H:%M:%S")
-st.write(f"Page loaded at: {load_time}")
+st.title("Auto-reload on right-click or tab focus")
 
 js_code = """
 <script>
 function reloadPage() {
+    console.log("Reloading page now!");
     window.location.reload();
 }
 
 document.addEventListener('contextmenu', function(e) {
+    console.log("Right-click detected");
     e.preventDefault();
     reloadPage();
 });
 
-let devtoolsOpen = false;
-const threshold = 160;
-setInterval(() => {
-    const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-    const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-    if (widthThreshold || heightThreshold) {
-        if (!devtoolsOpen) {
-            devtoolsOpen = true;
-            reloadPage();
-        }
-    } else {
-        devtoolsOpen = false;
-    }
-}, 1000);
+window.addEventListener('focus', function() {
+    console.log("Window gained focus - reloading");
+    reloadPage();
+});
 </script>
 """
 
-components.html(js_code)
+components.html(js_code, height=0)
+st.write("Try right-click or switching tabs to trigger reload.")
