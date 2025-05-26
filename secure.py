@@ -1,15 +1,14 @@
 import streamlit as st
 
-st.set_page_config(page_title="Secure App")
+st.set_page_config(page_title="🔄 Refresh Demo")
 
-# Simulate locked state
-locked = st.checkbox("🔒 Lock the page manually")
+st.title("🔁 Refresh Button Example")
 
-if locked:
-    st.error("🔐 This page is locked. You cannot continue.")
-    st.stop()
+if st.button("🔄 Refresh Page"):
+    st.experimental_rerun()
 
-st.success("✅ Welcome! The page is active.")
+st.write("This page was last loaded at:")
+st.code(st.session_state.get("last_load_time", "First load"))
 
-# Main content
-st.write("This is your secure Streamlit app.")
+import time
+st.session_state["last_load_time"] = time.strftime("%H:%M:%S")
