@@ -1,11 +1,16 @@
 import streamlit as st
-import time
+import streamlit.components.v1 as components
 
-st.title("Refresh Page Button Demo")
+st.title("Full Browser Refresh Button")
 
-# Display current time to see effect of refresh
-st.write("Page loaded at:", time.strftime("%H:%M:%S"))
+if st.button("Refresh (F5)"):
+    components.html(
+        """
+        <script>
+        window.location.reload();
+        </script>
+        """,
+        height=0,
+    )
 
-# Button to refresh (rerun) the app
-if st.button("Refresh Page"):
-    st.experimental_user()
+st.write("Click the button above to reload the entire page (like F5).")
