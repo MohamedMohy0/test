@@ -8,7 +8,23 @@ js_code = """
 #overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    width: 100vw;
+    width: 100vw;import streamlit as st
+import streamlit.components.v1 as components
+
+st.title("Disable right-click inside app area")
+
+js = """
+<script>
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    alert("Right-click is disabled inside this app.");
+});
+</script>
+"""
+
+components.html(js)
+st.write("Try right-clicking anywhere inside this app area.")
+
     height: 100vh;
     z-index: 9999999;
     /* Make overlay invisible but catch mouse events */
