@@ -9,20 +9,32 @@ st.write("Basic JavaScript protections are active.")
 # Inject JavaScript
 st.markdown("""
     <script>
-        // Disable right-click
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        // Block right-click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        }, false);
 
-        // Block some DevTools shortcuts
+        // Block key combinations
         document.onkeydown = function(e) {
-            if (e.keyCode === 123 || // F12
-                (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
-                (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
-                (e.ctrlKey && e.keyCode === 85)) { // Ctrl+U
-                return false;
-            }
+            if (e.keyCode == 123) { return false; } // F12
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 73) { return false; } // Ctrl+Shift+I
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 74) { return false; } // Ctrl+Shift+J
+            if (e.ctrlKey && e.keyCode == 85) { return false; } // Ctrl+U
         };
 
-        // Reload if user switches back to tab
+        // Detect DevTools open (basic)
+        let devtoolsOpen = false;
+        const element = new Image();
+        Object.defineProperty(element, 'id', {
+            get: function () {
+                devtoolsOpen = true;
+                alert("DevTools is open! Action blocked.");
+                location.reload();
+            }
+        });
+        console.log(element);
+
+        // Reload when tab returns to focus
         document.addEventListener("visibilitychange", function () {
             if (!document.hidden) {
                 location.reload();
@@ -30,3 +42,4 @@ st.markdown("""
         });
     </script>
 """, unsafe_allow_html=True)
+
