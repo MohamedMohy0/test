@@ -1,13 +1,19 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.title("Test Right Click Block")
+st.write("Try right-click inside this app area — it should be blocked.")
 
-right_click_blocker = """
-<script>
-document.addEventListener('contextmenu', event => event.preventDefault());
-</script>
-"""
+# Inject JS to disable right-click inside the iframe area
+components.html(
+    """
+    <script>
+    document.addEventListener('contextmenu', event => {
+        event.preventDefault();
+        alert('Right-click is disabled inside the app.');
+    });
+    </script>
+    """,
+    height=0,
+)
 
-components.html(right_click_blocker, height=0)
 st.write("Try right-clicking anywhere inside this app area.")
