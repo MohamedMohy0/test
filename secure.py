@@ -1,16 +1,16 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.title("Disable right-click inside app area")
+st.title("Right-click to refresh the page")
 
 js = """
 <script>
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
-    alert("Right-click is disabled inside this app.");
+    location.reload();
 });
 </script>
 """
 
-components.html(js)
-st.write("Try right-clicking anywhere inside this app area.")
+components.html(js, height=0)
+st.write("Try right-clicking anywhere inside this app area to refresh the page.")
