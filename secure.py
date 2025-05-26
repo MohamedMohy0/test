@@ -1,14 +1,11 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="🔁 Refresh Page")
+st.title("Refresh Page Button Demo")
 
-st.title("🔁 Refresh Button Demo")
+# Display current time to see effect of refresh
+st.write("Page loaded at:", time.strftime("%H:%M:%S"))
 
-# Show current time (proves refresh happened)
-st.write("This page was last loaded at:")
-st.code(time.strftime("%H:%M:%S"))
-
-# Add refresh button
-if st.button("🔄 Refresh Page"):
+# Button to refresh (rerun) the app
+if st.button("Refresh Page"):
     st.experimental_rerun()
