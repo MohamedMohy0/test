@@ -1,16 +1,18 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
 st.title("Right-click to refresh the page")
 
-js = """
-<script>
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-    location.reload();
-});
-</script>
-"""
+# Inject JS into the main page DOM using st.markdown
+st.markdown(
+    """
+    <script>
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        window.location.reload();
+    });
+    </script>
+    """,
+    unsafe_allow_html=True,
+)
 
-components.html(js, height=0)
 st.write("Try right-clicking anywhere inside this app area to refresh the page.")
