@@ -1,22 +1,29 @@
 import streamlit as st
+import time
 import streamlit.components.v1 as components
 
-st.title("Auto-refresh on Right-click or DevTools")
+if "reload_count" not in st.session_state:
+    st.session_state.reload_count = 0
+st.session_state.reload_count += 1
+
+st.title("Auto-refresh demo with timestamp")
+
+load_time = time.strftime("%Y-%m-%d %H:%M:%S")
+st.write(f"Page loaded at: {load_time}")
+st.write(f"Reload count: {st.session_state.reload_count}")
 
 js_code = """
 <script>
-// Reload page function
+// Reload on right-click or devtools open (same as before)
 function reloadPage() {
     window.location.reload();
 }
 
-// Right-click detection
 document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();   // optionally block right-click menu
+    e.preventDefault();
     reloadPage();
 });
 
-// DevTools detection - simple trick
 let devtoolsOpen = false;
 const threshold = 160;
 setInterval(() => {
@@ -35,4 +42,3 @@ setInterval(() => {
 """
 
 components.html(js_code)
-st.write("Try right-clicking or opening DevTools — the page will refresh automatically.")
